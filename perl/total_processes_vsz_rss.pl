@@ -3,20 +3,20 @@ use warnings;
 use strict;
 
 # Minimalistic, simple script that shows the total RSS (Resident Set Size) of all processes, 
-# as well as the total VSZ (Virtual Size) of all processes as well.
+# as well as the total VSZ (Virtual Size) of all processes.
 
 # This is the only dependency of this script.
 # Install it with: "cpan Number::Bytes::Human". Easy enough.
 use Number::Bytes::Human qw(format_bytes);
 
 # This script is Linux only. `ps` on Darwins suck!
-if ("$^O" eq "darwin") {
+if ("$^O" ne "linux") {
     print "Linux Only Man!\n";
     exit;
 }
 
-# Execute the ps command based on the OS type.
-my $PSout;
+# Execute the ps.
+my $PSout = `ps o vsz=,rss= ax`;
 
 my @PSout_lines = split("\n", $PSout);
 
